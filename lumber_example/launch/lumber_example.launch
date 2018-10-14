@@ -1,0 +1,11 @@
+<!-- Launch file example -->
+<!-- This will only run the lumberjack/mill/shop nodes and let them communicate -->
+<launch>
+  <node name="lumberjack" pkg="lumber_example" type="lumberjack" output="screen" >
+    <!-- params can go here if needed -->
+  </node>
+  
+  <node name="lumbermill" pkg="lumber_example" type="lumbermill_node" output="screen" />
+  <node name="lumbershop" pkg="lumber_example" type="lumbershop_node" output="screen" />
+
+</launch>
