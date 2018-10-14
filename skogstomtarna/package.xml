@@ -1,0 +1,22 @@
+<package>
+  <name>skogstomtarna</name>
+  <version>0.0.1</version>
+  <description>
+    Meta package for Skogforsk XT28-forwarder platform
+  </description>
+  <license>MIT</license>
+
+  <! -- add your emails bois -->
+  <author email="tomaszuk@kth.se">Michal Tomaszuk</author>
+
+
+  <maintainer email="tomaszuk@kth.se">Michal Tomaszuk</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend></run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>
