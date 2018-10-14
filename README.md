@@ -37,9 +37,9 @@ Arduino has ready-to-use ROS libraries and can connect to topics via USB serial.
 Launching Arduino nodes is a bit different, since the node runs directly on the board. Instead of a regular node launch you have to use something like this:
 
 ```xml
-<node name="gripper_node" pkg="rosserial_python" type="serial_node.py" output="screen">
+<node name="NODE_NAME" pkg="rosserial_python" type="serial_node.py" output="screen">
   <param name="port" value="/dev/ttyUSBX" />
   <param name="baud" value="57600" />
 </node>
 ```
-X is of course the USB port used. Detection can probably be automated. Or we can just connect all Arduinos via CAN.
+```NODE_NAME``` is the name of the node (duh), and ```X``` is of course the USB port used. Detection of the port can probably be automated. Or we can just connect all Arduinos via CAN.
