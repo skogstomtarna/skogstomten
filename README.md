@@ -18,6 +18,7 @@ iApple(tm)(c)(r) and Windows: I have no idea.
 
 ## Getting started with ROS
 A good deal of info can be found here: https://anywiki.csc.kth.se/DD2425/doku.php?id=start (ignore the dead certificate warning, you can skip it with advanced options)
+
 You should be able to find a robot lab there to get some bearings on how ROS works. But in an extreme short:
 1. ROS is a platform to easily communicate between controllers ("nodes").
 2. You have a main computer running the ```roscore``` and then some nodes that connect to each other using topics.
@@ -28,4 +29,4 @@ You should be able to find a robot lab there to get some bearings on how ROS wor
 
 
 ## Branching
-I am not a git expert, and I don't expect you to be either. But I think branching is the way to go here, don't commit to master willy-nilly. :-P
+I am not a git expert, and I don't expect you to be one either. But I think branching is the way to go here, don't commit to master willy-nilly. :-P
