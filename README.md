@@ -30,3 +30,16 @@ You should be able to find a robot lab there to get some bearings on how ROS wor
 
 ## Branching
 I am not a git expert, and I don't expect you to be one either. But I think branching is the way to go here, don't commit to master willy-nilly. :-P
+
+## Arduino
+Arduino has ready-to-use ROS libraries and can connect to topics via USB serial. It is a bit tricky, but works - I have already tried it. You have to install ```rosserial-arduino```and ```rosserial``` for that to work. Instructions:http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup
+
+Launching Arduino nodes is a bit different, since the node runs directly on the board. Instead of a regular node launch you have to use something like this:
+
+```xml
+<node name="gripper_node" pkg="rosserial_python" type="serial_node.py" output="screen">
+  <param name="port" value="/dev/ttyUSBX" />
+  <param name="baud" value="57600" />
+</node>
+```
+X is of course the USB port used. Detection can probably be automated. Or we can just connect all Arduinos via CAN.
