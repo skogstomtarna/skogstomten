@@ -3,7 +3,9 @@ ROS platform for the XT28-forwarder test rig
 
 ## Setup
 Check out this link: http://wiki.ros.org/kinetic/Installation
+
 I say we run ROS Kinetic, it's the most stable and I already have it installed. :^) There are two newer distributions, Lunar and Melodic, and to be honest I'm not sure what even is the difference. But hey, kinetic is stable and recommended.
+
 If you're running a more exotic Linux distro (like me with Mint Sonya), you might not be getting Kinetic by default. I had to update my ```/etc/apt/sources.list.d/ros-latest.list``` and change ```sonya main``` to ```xenial main``` at the end, then update my ```apt```. It worked, and nothing has exploded. Yet.
 
 Assuming ROS Kinetic installed for you in a standard way and you are running some flavor of Linux:
