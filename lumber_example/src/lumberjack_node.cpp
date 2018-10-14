@@ -13,10 +13,10 @@ int main(int argc, char **argv) // ros arguments in main. always the same, I thi
   // init ROS and create a node handle
   ros::init(argc, argv, "er_gripper_node");
   ros::NodeHandle n;
-  
+ 
   // create a publisher object
   ros::Publisher lumberjack_pub;
-  
+ 
   // advertise to the topic "lumber_to_mill" with a queue size of 10
   // without advertising, nothing will happen as the publisher is just hanging there, empty and alone
   lumberjack_pub = n.advertise<std_msgs::Int64>("lumber_to_mill", 10);
@@ -37,16 +37,18 @@ int main(int argc, char **argv) // ros arguments in main. always the same, I thi
 
     // do something
     int chopped_tree = 1;
+    ROS_DEBUG("cut down %d tree", chopped_tree);
     
     // package the message
     lumber_msg.data = chopped_tree;
+    ROS_DEBUG("sent lumber from lumberjack to lumbermill");
     
     // publish
     lumberjack_pub.publish(lumber_msg);
 
     // similar to time.sleep(), but now Powered by ROS (c) (trademark)
     loop_rate.sleep();
-  }
+ }
 
   return 0;
 }
