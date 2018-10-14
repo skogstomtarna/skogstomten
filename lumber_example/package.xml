@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lumber_example</name>
+  <version>0.0.1</version>
+  <description>This is an example in using subscribers and publishers with a cool forestry theme.</description>
+
+  <author email="tomaszuk@kth.se">Michal Tomaszuk</author>
+
+  <maintainer email="tomaszuk@kth.se">Michal Tomaszuk</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <export>
+  </export>
+</package>
