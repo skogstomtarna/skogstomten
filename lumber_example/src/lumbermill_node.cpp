@@ -27,6 +27,7 @@ void lumber_callback(const std_msgs::Int64::ConstPtr &lumber_msg)
 {
   // unpack the message
   int logs = lumber_msg->data;
+  ROS_DEBUG("received %d logs",logs);
   // cut the logs by calling a separate function and package to planks_msg
   planks_msg.data = log_cutter(logs);
   
