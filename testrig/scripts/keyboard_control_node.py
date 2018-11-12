@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+## keyboard node to control the robot with WSAD
+## publishes an action ID that is then taken by motor_controller_node
+## printed feedback is a bit weird
 import rospy
 from std_msgs.msg import Int8
 from pynput import keyboard
@@ -9,11 +12,17 @@ class KeyboardNode:
     def __init__(self):
         # action msg. 0=idle, 1=forward, 2=left, 3=right, 4=backward
         self.action = 0
+
         # publisher obj
         self.pub = rospy.Publisher('motor_action', Int8, queue_size=1)
+
+        # node init
         rospy.init_node('keyboard_node', anonymous=True)
+
+        # loop rate
         rate = rospy.Rate(10) # 10hz
 
+        # kb listener
         with keyboard.Listener(on_press=lambda key: self.on_press(key), on_release=lambda key: self.on_release(key)) as listener:
             listener.join()
 
@@ -37,6 +46,7 @@ class KeyboardNode:
 
     def on_release(self,key):
         try:
+            # maybe just merge all these? meh
             print('{0} released'.format(key))
             if key.char == 'w':
                 self.action = 0

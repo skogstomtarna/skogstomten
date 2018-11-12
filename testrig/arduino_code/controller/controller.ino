@@ -25,6 +25,7 @@ int last_callback = 0; // timestamp for last callback
 int timeout = 1000; // millis to timeout (->idle state)
 int loop_rate = 100;
 
+// display wrapper
 void updateDisplay()
 {
   display.clearDisplay();
@@ -36,11 +37,14 @@ void updateDisplay()
   display.print("MOTOR CTRL by Misza");
   display.setCursor(45,12);
   display.println("v0.5.0");
+
+  // table titles
   display.setCursor(13,39);
   display.print("en");
   display.setCursor(7,51);
   display.print("dir");
 
+  // print table with enable and dir for each motor
   for(int i=0; i<4; i++)
   {
     display.setTextColor(WHITE);
@@ -60,9 +64,19 @@ void updateDisplay()
   display.display();
 }
 
+// simple macro to update motor pins
+void setMotors()
+{
+  for(int i=0; i<8; i++)
+  {
+    digitalWrite(pin_numbers[i],pin_data[i]);
+  }
+}
+
+// ROS subscriber callback
 void motor_callback( const std_msgs::Int8& action_msg )
 {
-  // unpack_msg and save new timestamp
+  // just unpacks the msg and saves new timestamp
   int in_data = action_msg.data;
   for(int i=0; i<8; i++)
   {
@@ -72,32 +86,28 @@ void motor_callback( const std_msgs::Int8& action_msg )
   last_callback = millis();
 }
 
+
 ros::NodeHandle nh;
 ros::Subscriber<std_msgs::Int8> pin_sub("pins", motor_callback);
 
-void setMotors()
-{
-  for(int i=0; i<8; i++)
-  {
-    digitalWrite(pin_numbers[i],pin_data[i]);
-  }
-}
 
 void setup()
 {
+  // ROS init
   nh.initNode();
   nh.subscribe(pin_sub);
+
+  // display init
   display.begin(SSD1306_SWITCHCAPVCC);
   display.clearDisplay();
   display.display();
-  // pin init macro
+
+  // motor pin init macro
   for(int i=0; i<8; i++)
   {
     pinMode(pin_numbers[i],OUTPUT);
   }
 }
-
-int ledPin = 1;
 
 void loop()
 {
@@ -109,8 +119,10 @@ void loop()
       pin_data[i] = 0;
     }
   }
+
+  // update ROS, update motors, update display, sleep
+  nh.spinOnce();
   setMotors();
   updateDisplay();
   delay(loop_rate);
-  nh.spinOnce();
 }

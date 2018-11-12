@@ -1,5 +1,6 @@
 /*
-  * "translates" action from keyboard node to pin msg sent to arduino
+  * This "translates" action from keyboard node to pin msg sent to arduino
+  * Pretty easy and can change motor functionality a lot without ever touching the 'ino
 */
 
 #include "ros/ros.h"
@@ -13,7 +14,7 @@ ros::Subscriber action_sub;
 
 int pinCalc(int action)
 {
-  // format from MSB: enable0-3, dir0-3
+  // format from MSB: enable1-4, dir1-4
   int pin_msg;
   if(action==0) // idle
   {
@@ -51,9 +52,10 @@ void action_callback(const std_msgs::Int8::ConstPtr &action_msg)
   std_msgs::Int8 pin_msg;
   pin_msg.data = pinCalc(action);
 
-  // publish the planks
+  // publish pins to arduino
   pin_pub.publish(pin_msg);
 
+  // Debug msgs
   if(DEBUG)
   {
     ROS_INFO("Received action:");
@@ -77,13 +79,17 @@ void action_callback(const std_msgs::Int8::ConstPtr &action_msg)
     {
       ROS_INFO("Idle");
     }
-    /*
+    char pin_unpk[8];
+    for(int i=0; i<8; i++)
+    {
+      pin_unpk[7-i] = (pin_msg.data)%2;
+      pin_msg.data = (pin_msg.data)>>1;
+    }
     ROS_INFO("Sent pins:");
-    ROS_INFO("M1: enable(%d) direction(%d)", pin_msg.en1, pin_msg.dir1);
-    ROS_INFO("M2: enable(%d) direction(%d)", pin_msg.en2, pin_msg.dir2);
-    ROS_INFO("M3: enable(%d) direction(%d)", pin_msg.en3, pin_msg.dir3);
-    ROS_INFO("M4: enable(%d) direction(%d)", pin_msg.en4, pin_msg.dir4);
-    */
+    ROS_INFO("M1: enable(%d) direction(%d)", pin_unpk[0], pin_unpk[4]);
+    ROS_INFO("M2: enable(%d) direction(%d)", pin_unpk[1], pin_unpk[5]);
+    ROS_INFO("M3: enable(%d) direction(%d)", pin_unpk[2], pin_unpk[6]);
+    ROS_INFO("M4: enable(%d) direction(%d)", pin_unpk[3], pin_unpk[7]);
   }
 }
 
