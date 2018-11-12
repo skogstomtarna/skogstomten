@@ -1,4 +1,11 @@
 <!-- Change this lol -->
 <launch>
+
   <node name="motor_controller" pkg="testrig" type="motor_controller_node" output="screen" />
+
+  <node name="arduino_motor_node" pkg="rosserial_python" type="serial_node.py" output="screen">
+   <param name="port" value="/dev/ttyACM0" />
+   <param name="baud" value="9600" />
+   </node>
+
 </launch>
