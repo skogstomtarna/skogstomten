@@ -4,20 +4,19 @@
 ## publishes an action ID that is then taken by motor_controller_node
 ## printed feedback is a bit weird
 import rospy
-from std_msgs.msg import Int8
+from std_msgs.msg import Int64
 from pynput import keyboard
 
-
-class KeyboardNode:
+class KeyboardWsadNode:
     def __init__(self):
+        # node init
+        rospy.init_node('keyboard_wsad_node', anonymous=True)
+
         # action msg. 0=idle, 1=forward, 2=left, 3=right, 4=backward
         self.action = 0
 
         # publisher obj
-        self.pub = rospy.Publisher('motor_action', Int8, queue_size=1)
-
-        # node init
-        rospy.init_node('keyboard_node', anonymous=True)
+        self.pub = rospy.Publisher('motor_action', Int64, queue_size=1)
 
         # loop rate
         rate = rospy.Rate(10) # 10hz
@@ -62,12 +61,12 @@ class KeyboardNode:
             pass
 
     def publish(self):
-        action_msg = Int8()
+        action_msg = Int64()
         action_msg.data = self.action
         self.pub.publish(action_msg)
 
 if __name__ == '__main__':
     try:
-        kn = KeyboardNode()
+        kn = KeyboardWsadNode()
     except rospy.ROSInterruptException:
         pass
