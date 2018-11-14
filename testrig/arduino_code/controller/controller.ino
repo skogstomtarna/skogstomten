@@ -1,5 +1,5 @@
 #include <ros.h>
-#include <std_msgs/Int8.h>
+#include <std_msgs/Int64.h>
 #include <stdio.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -17,7 +17,7 @@
 Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 // motor pins: enable 1 2 3 4, dir 1 2 3 4
-int pin_numbers[] = {14,15,16,17,2,3,4,5};
+int pin_numbers[] = {48,44,40,36,46,42,38,34};
 char pin_data[] = {0,0,0,0,0,0,0,0};
 
 // time vars
@@ -74,7 +74,7 @@ void setMotors()
 }
 
 // ROS subscriber callback
-void motor_callback( const std_msgs::Int8& action_msg )
+void motor_callback( const std_msgs::Int64& action_msg )
 {
   // just unpacks the msg and saves new timestamp
   int in_data = action_msg.data;
@@ -88,7 +88,7 @@ void motor_callback( const std_msgs::Int8& action_msg )
 
 
 ros::NodeHandle nh;
-ros::Subscriber<std_msgs::Int8> pin_sub("pins", motor_callback);
+ros::Subscriber<std_msgs::Int64> pin_sub("pins", motor_callback);
 
 
 void setup()
@@ -98,6 +98,8 @@ void setup()
   nh.subscribe(pin_sub);
 
   // display init
+  pinMode(13,OUTPUT);
+  digitalWrite(13,1);
   display.begin(SSD1306_SWITCHCAPVCC);
   display.clearDisplay();
   display.display();
