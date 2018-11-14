@@ -5,7 +5,7 @@
 
 #include "ros/ros.h"
 #include <ros/console.h>
-#include "std_msgs/Int8.h"
+#include "std_msgs/Int64.h"
 
 bool DEBUG = true;
 // publisher and subscriber objects
@@ -44,12 +44,12 @@ int pinCalc(int action)
 }
 
 // callback for the subscriber
-void action_callback(const std_msgs::Int8::ConstPtr &action_msg)
+void action_callback(const std_msgs::Int64::ConstPtr &action_msg)
 {
   // unpack the message
   int action = action_msg->data;
 
-  std_msgs::Int8 pin_msg;
+  std_msgs::Int64 pin_msg;
   pin_msg.data = pinCalc(action);
 
   // publish pins to arduino
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
 
   action_sub = n.subscribe("motor_action", 1, action_callback);
-  pin_pub = n.advertise<std_msgs::Int8>("pin", 1);
+  pin_pub = n.advertise<std_msgs::Int64>("pins", 1);
 
   ros::Rate loop_rate(10);
   ros::spin();
