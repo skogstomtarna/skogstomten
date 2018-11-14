@@ -22,24 +22,39 @@ class KeyboardPinNode:
         rate = rospy.Rate(10) # 10hz
 
     def run(self):
+        print("Set motor pins directly.")
+        print("Format: EN1 DIR1 EN2 DIR2 EN3 DIR3 EN4 DIR4")
         command = ''
-        while command != 'quit' and command != 'exit':
-            command = raw_input('# set motors: motor1 enable dir, motor 2 enable dir etc \nexample: 10110011')
-            digits = command.split('')
-
+        while 1:
+            command = raw_input('# ')
+            if command == 'quit' or command == 'exit' or command == 'q':
+                print("Exiting. Thank you for your service.")
+                break
             input_error = 0
-            if len(digits)!=8:
-                print('Wrong argument length.')
-                input_error = 1
-            for i in range 8:
-                if digits[i]!='0' and digits[i]!='1'
-                    print('Wrong argument composition. Only 0s and 1s are allowed.')
-                    input_error = 1
-            if !input_error:
-                # if no errors, unpack
-                self.pins = digits[0]*128 + digits[2]*64 + digits[4]*32 + digits[6]*16 + digits[1]*8 + digits[3]*4 + digits[5]*2 + digits[7]
-                self.publish()
+            command = command.replace(' ','')
 
+            com_len = len(command)
+            if com_len!=8:
+                input_error = 1
+
+            digs = [0]*8
+            for i in range(com_len):
+                if command[i]!='0' and command[i]!='1':
+                    input_error = 2
+                    break
+                else:
+                    digs[i] = int(command[i])
+            if input_error==0:
+                # if no errors, unpack. Format: enables 1-4, dirs 1-4
+                self.pins = digs[0]*128 + digs[2]*64 + digs[4]*32 + digs[6]*16 + digs[1]*8 + digs[3]*4 + digs[5]*2 + digs[7]
+                print('Success. Sending value: {0}\n'.format(self.pins))
+                self.publish()
+            elif input_error==1:
+                print('Wrong argument length.\n')
+            elif input_error==2:
+                print('Only 1s and 0s allowed.\n')
+            else:
+                print("Unknown error.\n")
     def publish(self):
         pins_msg = Int64()
         pins_msg.data = self.pins
