@@ -11,6 +11,10 @@ bool DEBUG = true;
 // publisher and subscriber objects
 ros::Publisher pin_pub;
 ros::Subscriber action_sub;
+ros::Subscriber override_sub;
+
+std_msgs::Int64 pin_msg;
+int motor_override = 0;
 
 int pinCalc(int action)
 {
@@ -49,8 +53,8 @@ void action_callback(const std_msgs::Int64::ConstPtr &action_msg)
   // unpack the message
   int action = action_msg->data;
 
-  std_msgs::Int64 pin_msg;
-  pin_msg.data = pinCalc(action);
+  if(motor_override==0){ pin_msg.data = pinCalc(action); }
+  else{ pin_msg.data = 0; }
 
   // publish pins to arduino
   pin_pub.publish(pin_msg);
@@ -85,11 +89,25 @@ void action_callback(const std_msgs::Int64::ConstPtr &action_msg)
       pin_unpk[7-i] = (pin_msg.data)%2;
       pin_msg.data = (pin_msg.data)>>1;
     }
+    if(motor_override==0){ ROS_INFO("Motor override active."); }
+    else{ ROS_INFO("Motor override not active."); }
     ROS_INFO("Sent pins:");
     ROS_INFO("M1: enable(%d) direction(%d)", pin_unpk[0], pin_unpk[4]);
     ROS_INFO("M2: enable(%d) direction(%d)", pin_unpk[1], pin_unpk[5]);
     ROS_INFO("M3: enable(%d) direction(%d)", pin_unpk[2], pin_unpk[6]);
     ROS_INFO("M4: enable(%d) direction(%d)", pin_unpk[3], pin_unpk[7]);
+  }
+}
+
+// simply gets new override data
+void override_callback(const std_msgs::Int64::ConstPtr &override_msg)
+{
+  motor_override = override_msg->data;
+  // extra failsafe
+  if(motor_override != 0)
+  {
+    pin_msg.data = 0;
+    pin_pub.publish(pin_msg);
   }
 }
 
@@ -99,6 +117,7 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
 
   action_sub = n.subscribe("motor_action", 1, action_callback);
+  override_sub = n.subscribe("motor_override", 1, override_callback);
   pin_pub = n.advertise<std_msgs::Int64>("pins", 1);
 
   ros::Rate loop_rate(10);
