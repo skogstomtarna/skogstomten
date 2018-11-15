@@ -17,12 +17,12 @@
 Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 // motor pins: enable 1 2 3 4, dir 1 2 3 4
-int pin_numbers[] = {48,44,40,36,46,42,38,34};
+int pin_numbers[] = {47,45,43,41,39,37,35,33};
 char pin_data[] = {0,0,0,0,0,0,0,0};
 
 // time vars
-int last_callback = 0; // timestamp for last callback
-int timeout = 1000; // millis to timeout (->idle state)
+long long last_callback; // timestamp for last callback
+int timeout = 100; // millis to timeout (->idle state)
 int loop_rate = 100;
 
 // display wrapper
@@ -80,10 +80,13 @@ void motor_callback( const std_msgs::Int64& action_msg )
   int in_data = action_msg.data;
   for(int i=0; i<8; i++)
   {
-    pin_data[7-i] = in_data%2;
+    pin_data[7-i] = in_data&1;
     in_data = in_data>>1;
   }
   last_callback = millis();
+
+  // special case: if 512-bit is on, effectively increase the timeout 10x
+  if(in_data>0){ last_callback += 9*timeout; }
 }
 
 
@@ -99,7 +102,7 @@ void setup()
 
   // display init
   pinMode(13,OUTPUT);
-  digitalWrite(13,1);
+  digitalWrite(13,1); // terrible hack feeding display VCC from pin 13
   display.begin(SSD1306_SWITCHCAPVCC);
   display.clearDisplay();
   display.display();
@@ -109,6 +112,7 @@ void setup()
   {
     pinMode(pin_numbers[i],OUTPUT);
   }
+  last_callback = millis();
 }
 
 void loop()
