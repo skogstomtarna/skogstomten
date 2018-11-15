@@ -11,14 +11,19 @@ ros::Publisher sonic4("sonic4",&Distance4);
 
 // defines pins numbers
 const int trigPin = 12;
-const int echoPin1 = 8;
-const int echoPin2 = 9;
-const int echoPin3 = 10;
-const int echoPin4 = 11;
+const int echoPin1 = 11;
+const int echoPin2 = 10;
+const int echoPin3 = 9;
+const int echoPin4 = 8;
+const int ledPin1 = 7;
+const int ledPin2 = 6;
+const int ledPin3 = 5;
+const int ledPin4 = 4;
 
 // defines variables
 long duration;
 int distance;
+int warning1, warning2, warning3, warning4;
 
 void setup() {
   nh.getHardware()->setBaud(57600);
@@ -29,11 +34,14 @@ void setup() {
   nh.advertise(sonic4);
   
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
-//  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
   pinMode(echoPin1, INPUT); // Sets the echoPin as an Input
   pinMode(echoPin2, INPUT); // Sets the echoPin as an Input
   pinMode(echoPin3, INPUT); // Sets the echoPin as an Input
   pinMode(echoPin4, INPUT); // Sets the echoPin as an Input
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  pinMode(ledPin4, OUTPUT);
   Serial.begin(57600); // Starts the serial communication
 }
 
@@ -55,26 +63,45 @@ void loop() {
         duration = pulseIn(echoPin1, HIGH);
         distance = duration/29/2;
         Distance1.data=distance;
-        //delay(10);
-        //distance = 0;
+        if(distance<100){
+          digitalWrite(ledPin1, HIGH);
+        }
+        else{
+          digitalWrite(ledPin1, LOW); 
+        }
       break;
       case 1:
         duration = pulseIn(echoPin2, HIGH);
         distance = duration/29/2;
         Distance2.data=distance;
-        //delay(10);
+        if(distance<100){
+          digitalWrite(ledPin2, HIGH);
+        }
+        else{
+          digitalWrite(ledPin2, LOW); 
+        }
       break;
       case 2:
         duration = pulseIn(echoPin3, HIGH);
         distance = duration/29/2;
         Distance3.data=distance;
-        //delay(10);
+        if(distance<100){
+          digitalWrite(ledPin3, HIGH);
+        }
+        else{
+          digitalWrite(ledPin3, LOW); 
+        }
       break;
       case 3:
         duration = pulseIn(echoPin4, HIGH);
         distance = duration/29/2;
         Distance4.data=distance;
-        //delay(10);
+        if(distance<100){
+          digitalWrite(ledPin4, HIGH);
+        }
+        else{
+          digitalWrite(ledPin4, LOW); 
+        }
       break;
     }
     //delay(10);
