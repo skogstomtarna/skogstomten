@@ -21,13 +21,13 @@ class KeyboardWsadNode:
         # loop rate
         rate = rospy.Rate(10) # 10hz
 
-        # kb listener
+        # kb listener setup
         with keyboard.Listener(on_press=lambda key: self.on_press(key), on_release=lambda key: self.on_release(key)) as listener:
             listener.join()
 
     def on_press(self, key):
         try:
-            print('alphanumeric key {0} pressed'.format(key.char))
+            print('Alphanumeric key {0} pressed.'.format(key.char))
             if key.char == 'w':
                 self.action = 1 # forward
             elif key.char == 'a':
@@ -40,29 +40,25 @@ class KeyboardWsadNode:
                 exit()
 
             self.publish()
+            
         except AttributeError:
             pass
 
     def on_release(self,key):
         try:
-            # maybe just merge all these? meh
-            print('{0} released'.format(key))
-            if key.char == 'w':
-                self.action = 0
-            elif key.char == 'a':
-                self.action = 0
-            elif key.char == 'd':
-                self.action = 0
-            elif key.char == 's':
-                self.action = 0
-
+            # set to idle on release
+            print('Key {0} released.'.format(key))
+            self.action = 0
             self.publish()
         except AttributeError:
             pass
 
     def publish(self):
+        # action_msg is of type Int64
         action_msg = Int64()
+        # pack action
         action_msg.data = self.action
+        # pub
         self.pub.publish(action_msg)
 
 if __name__ == '__main__':
