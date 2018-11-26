@@ -12,8 +12,11 @@ class KeyboardWsadNode:
         # node init
         rospy.init_node('keyboard_wsad_node', anonymous=True)
 
-        # action msg. 0=idle, 1=forward, 2=left, 3=right, 4=backward
-        self.action = 0
+        self.x = 0 # left = -1, right = +1
+        self.y = 0 # backward = +1, forward = -1
+
+        # actions
+        self.action = 5 # 5 = idle
 
         # publisher obj
         self.pub = rospy.Publisher('motor_action', Int64, queue_size=1)
@@ -27,32 +30,51 @@ class KeyboardWsadNode:
 
     def on_press(self, key):
         try:
-            print('Alphanumeric key {0} pressed.'.format(key.char))
-            if key.char == 'w':
-                self.action = 1 # forward
-            elif key.char == 'a':
-                self.action = 2 # left
-            elif key.char == 'd':
-                self.action = 3 # right
-            elif key.char == 's':
-                self.action = 4 # back
-            elif key.char == 'q' or key == keyboard.Key.esc:
-                exit()
+            print('')
 
+            if key.char == 'q' or key == keyboard.Key.esc:
+                exit()
+            elif key.char == 'w':
+                self.y = 1
+                print('y = {0}'.format(self.y))
+            elif key.char == 's':
+                self.y = -1
+                print('y = {0}'.format(self.y))
+            elif key.char == 'a':
+                self.x = -1
+                print('x = {0}'.format(self.x))
+            elif key.char == 'd':
+                self.x = 1
+                print('x = {0}'.format(self.x))
+
+            self.action_recalc()
             self.publish()
-            
+
         except AttributeError:
             pass
 
     def on_release(self,key):
         try:
-            # set to idle on release
-            print('Key {0} released.'.format(key))
-            self.action = 0
+            print('')
+
+            if key.char == 'w' or key.char == 's':
+                self.y = 0
+            elif key.char == 'a' or key.char == 'd':
+                self.x = 0
+
+            self.action_recalc()
             self.publish()
         except AttributeError:
             pass
 
+    def action_recalc(self):
+        # actions - imagine a keypad:
+        # 7 8 9     FL F FR
+        # 4 5 6  =  L  I  R
+        # 1 2 3     BL B BR
+        # F = forward, B = backward, L = left, R = right, I = idle
+        self.action = self.x + 3*self.y + 4
+        print('action: {0}'.format(self.action))
     def publish(self):
         # action_msg is of type Int64
         action_msg = Int64()
