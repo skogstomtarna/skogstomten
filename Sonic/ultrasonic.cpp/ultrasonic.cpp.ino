@@ -23,7 +23,6 @@ const int ledPin4 = 4;
 // defines variables
 long duration;
 int distance;
-int warning1, warning2, warning3, warning4;
 
 void setup() {
   nh.getHardware()->setBaud(57600);
@@ -46,66 +45,80 @@ void setup() {
 }
 
 void loop() {
+  
+  // Reads the echoPin, returns the sound wave travel time in microseconds
   // Clears the trigPin
   digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  
+  delayMicroseconds(5);
   // Sets the trigPin on HIGH state for 10 micro seconds
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  
-  // Reads the echoPin, returns the sound wave travel time in microseconds
 
-  for(int i=0;i<8;i++){
-    switch(i){
-      case 0:
-        duration = pulseIn(echoPin1, HIGH);
-        distance = duration/29/2;
-        Distance1.data=distance;
-        if(distance<100){
-          digitalWrite(ledPin1, HIGH);
-        }
-        else{
-          digitalWrite(ledPin1, LOW); 
-        }
-      break;
-      case 1:
-        duration = pulseIn(echoPin2, HIGH);
-        distance = duration/29/2;
-        Distance2.data=distance;
-        if(distance<100){
-          digitalWrite(ledPin2, HIGH);
-        }
-        else{
-          digitalWrite(ledPin2, LOW); 
-        }
-      break;
-      case 2:
-        duration = pulseIn(echoPin3, HIGH);
-        distance = duration/29/2;
-        Distance3.data=distance;
-        if(distance<100){
-          digitalWrite(ledPin3, HIGH);
-        }
-        else{
-          digitalWrite(ledPin3, LOW); 
-        }
-      break;
-      case 3:
-        duration = pulseIn(echoPin4, HIGH);
-        distance = duration/29/2;
-        Distance4.data=distance;
-        if(distance<100){
-          digitalWrite(ledPin4, HIGH);
-        }
-        else{
-          digitalWrite(ledPin4, LOW); 
-        }
-      break;
-    }
-    //delay(10);
+  duration = pulseIn(echoPin1, HIGH, 50000);
+  distance = duration/29/2;
+  Distance1.data=distance;
+  if(distance<30 && distance != 0){
+    digitalWrite(ledPin1, HIGH);
   }
+  else{
+    digitalWrite(ledPin1, LOW); 
+  }
+
+  delay(10);
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin2, HIGH, 50000);
+  distance = duration/29/2;
+  Distance2.data=distance;
+  if(distance<30 && distance != 0){
+    digitalWrite(ledPin2, HIGH);
+  }
+  else{
+    digitalWrite(ledPin2, LOW); 
+  }
+
+  delay(10);
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin3, HIGH, 50000);
+  distance = duration/29/2;
+  Distance3.data=distance;
+  if(distance<30 && distance != 0){
+    digitalWrite(ledPin3, HIGH);
+  }
+  else{
+    digitalWrite(ledPin3, LOW); 
+  }
+
+  delay(10);
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin4, HIGH, 50000);
+  distance = duration/29/2;
+  Distance4.data=distance;
+  if(distance<30 && distance != 0){
+    digitalWrite(ledPin4, HIGH);
+  }
+  else{
+    digitalWrite(ledPin4, LOW); 
+  }
+
   
   //Publishing data
   sonic1.publish(&Distance1);
