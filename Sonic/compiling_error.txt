@@ -1,0 +1,76 @@
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:6:1: error: ‘ros’ does not name a type
+ ros::Publisher sonic_pub;
+ ^~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:7:1: error: ‘ros’ does not name a type
+ ros::Subscriber sonic_sub;
+ ^~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:9:1: error: ‘std_msgs’ does not name a type
+ std_msgs::Int64 sonic_msg;
+ ^~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:14:22: error: ‘sensor’ was not declared in this scope
+ int distance_warning(sensor)
+                      ^~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:27:1: error: expected unqualified-id before ‘for’
+ for(int i=0;i<8;i++){
+ ^~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:27:13: error: ‘i’ does not name a type
+ for(int i=0;i<8;i++){
+             ^
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:27:17: error: ‘i’ does not name a type
+ for(int i=0;i<8;i++){
+                 ^
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:32:3: error: ‘sensor_data’ does not name a type
+   sensor_data[0] = Distance1->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:33:3: error: ‘sensor_data’ does not name a type
+   sensor_data[1] = Distance2->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:34:3: error: ‘sensor_data’ does not name a type
+   sensor_data[2] = Distance3->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:35:3: error: ‘sensor_data’ does not name a type
+   sensor_data[3] = Distance4->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:36:3: error: ‘sensor_data’ does not name a type
+   sensor_data[4] = Distance5->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:37:3: error: ‘sensor_data’ does not name a type
+   sensor_data[5] = Distance6->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:38:3: error: ‘sensor_data’ does not name a type
+   sensor_data[6] = Distance7->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:39:3: error: ‘sensor_data’ does not name a type
+   sensor_data[7] = Distance8->data;
+   ^~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:42:28: error: ‘std_msgs’ does not name a type
+   void shop_callback(const std_msgs::Int64::ConstPtr &Distance1)
+                            ^~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:42:43: error: expected unqualified-id before ‘::’ token
+   void shop_callback(const std_msgs::Int64::ConstPtr &Distance1)
+                                           ^~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:42:43: error: expected ‘)’ before ‘::’ token
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:42:43: error: expected initializer before ‘::’ token
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp: In function ‘void node_init()’:
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:52:5: error: ‘ros’ has not been declared
+     ros::NodeHandle n;
+     ^~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:53:5: error: ‘planks_sub’ was not declared in this scope
+     planks_sub = n.subscribe("planks_to_shop", 10, shop_callback);
+     ^~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:53:18: error: ‘n’ was not declared in this scope
+     planks_sub = n.subscribe("planks_to_shop", 10, shop_callback);
+                  ^
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:53:52: error: ‘shop_callback’ was not declared in this scope
+     planks_sub = n.subscribe("planks_to_shop", 10, shop_callback);
+                                                    ^~~~~~~~~~~~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp: In function ‘int main(int, char**)’:
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:60:5: error: ‘ros’ has not been declared
+     ros::init(argc, argv, "sonic_read_node");
+     ^~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:62:5: error: ‘ros’ has not been declared
+     ros::Rate loop_rate(5);
+     ^~~
+/home/tgeiger/catkin_ws/src/skogstomten/Sonic/sonic_read.cpp:63:5: error: ‘ros’ has not been declared
+     ros::spin();
+     ^~~
