@@ -1,0 +1,4 @@
+/home/tgeiger/catkin_ws/src/skogstomten/sonic/sonic_read.cpp:2:10: fatal error: ros.h: No such file or directory
+ #include "ros.h"
+          ^~~~~~~
+compilation terminated.
