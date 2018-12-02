@@ -23,30 +23,30 @@ const int ledPin4 = 4;
 // defines variables
 long duration;
 int distance;
+const int warning = 100;  // Sets the distance of which the LED's react to
 
 void setup() {
   nh.getHardware()->setBaud(57600);
   nh.initNode();
-  nh.advertise(sonic1);
+  nh.advertise(sonic1); // Advertises the topics to ROS
   nh.advertise(sonic2);
   nh.advertise(sonic3);
   nh.advertise(sonic4);
   
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
-  pinMode(echoPin1, INPUT); // Sets the echoPin as an Input
-  pinMode(echoPin2, INPUT); // Sets the echoPin as an Input
-  pinMode(echoPin3, INPUT); // Sets the echoPin as an Input
-  pinMode(echoPin4, INPUT); // Sets the echoPin as an Input
-  pinMode(ledPin1, OUTPUT);
-  pinMode(ledPin2, OUTPUT);
-  pinMode(ledPin3, OUTPUT);
-  pinMode(ledPin4, OUTPUT);
+  pinMode(echoPin1, INPUT); // Sets the echoPin1 as an Input
+  pinMode(echoPin2, INPUT); // Sets the echoPin2 as an Input
+  pinMode(echoPin3, INPUT); // Sets the echoPin3 as an Input
+  pinMode(echoPin4, INPUT); // Sets the echoPin4 as an Input
+  pinMode(ledPin1, OUTPUT); // Sets the ledPin1 as an Output
+  pinMode(ledPin2, OUTPUT); // Sets the ledPin2 as an Output
+  pinMode(ledPin3, OUTPUT); // Sets the ledPin3 as an Output
+  pinMode(ledPin4, OUTPUT); // Sets the ledPin4 as an Output
   Serial.begin(57600); // Starts the serial communication
 }
 
-void loop() {
-  
-  // Reads the echoPin, returns the sound wave travel time in microseconds
+// Function to activate the trigger pulse
+void trigger(){
   // Clears the trigPin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(5);
@@ -54,83 +54,69 @@ void loop() {
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
+}
 
-  duration = pulseIn(echoPin1, HIGH, 50000);
-  distance = duration/29/2;
+void loop() {
+  // pulseIn is a blocking function, thus we need to run each sensor one at a time.
+  
+  // First sensor
+  trigger();
+  duration = pulseIn(echoPin1, HIGH, 100000);
+  distance = duration/29/2;               // "/29/2" speed of sound travelling back and forth
   Distance1.data=distance;
-  if(distance<30 && distance != 0){
+  if(distance<warning && distance != 0){  // Distance results in "0" if no return signal is recieved.
     digitalWrite(ledPin1, HIGH);
   }
   else{
     digitalWrite(ledPin1, LOW); 
   }
-
   delay(10);
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(5);
-  // Sets the trigPin on HIGH state for 10 micro seconds
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
 
-  duration = pulseIn(echoPin2, HIGH, 50000);
+  //Second sensor
+  trigger();
+  duration = pulseIn(echoPin2, HIGH, 100000);
   distance = duration/29/2;
   Distance2.data=distance;
-  if(distance<30 && distance != 0){
+  if(distance<warning && distance != 0){
     digitalWrite(ledPin2, HIGH);
   }
   else{
     digitalWrite(ledPin2, LOW); 
   }
-
   delay(10);
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(5);
-  // Sets the trigPin on HIGH state for 10 micro seconds
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
 
-  duration = pulseIn(echoPin3, HIGH, 50000);
+  // Third sensor
+  trigger();
+  duration = pulseIn(echoPin3, HIGH, 100000);
   distance = duration/29/2;
   Distance3.data=distance;
-  if(distance<30 && distance != 0){
+  if(distance<warning && distance != 0){
     digitalWrite(ledPin3, HIGH);
   }
   else{
     digitalWrite(ledPin3, LOW); 
   }
-
   delay(10);
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(5);
-  // Sets the trigPin on HIGH state for 10 micro seconds
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
 
-  duration = pulseIn(echoPin4, HIGH, 50000);
+  // Fourth sensor
+  trigger();
+  duration = pulseIn(echoPin4, HIGH, 100000);
   distance = duration/29/2;
   Distance4.data=distance;
-  if(distance<30 && distance != 0){
+  if(distance<warning && distance != 0){
     digitalWrite(ledPin4, HIGH);
   }
   else{
     digitalWrite(ledPin4, LOW); 
   }
+  delay(10);
 
-  
-  //Publishing data
+  // Publishing data
   sonic1.publish(&Distance1);
-  //delay(10);
   sonic2.publish(&Distance2);
-  //delay(10);
   sonic3.publish(&Distance3);
-  //delay(10);
   sonic4.publish(&Distance4);
-  //delay(10);
   
   nh.spinOnce();
-  
   delay(100);
 }

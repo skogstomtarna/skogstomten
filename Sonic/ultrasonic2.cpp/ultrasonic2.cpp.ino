@@ -63,7 +63,11 @@ void loop() {
         duration = pulseIn(echoPin5, HIGH);
         distance = duration/29/2;
         Distance5.data=distance;
+<<<<<<< HEAD
         if(distance<50){
+=======
+        if(distance<100){
+>>>>>>> 8cd8a82ff50b949f939efcd8b7c87625fb2a3eba
           digitalWrite(ledPin1, HIGH);
         }
         else{
@@ -75,7 +79,11 @@ void loop() {
         duration = pulseIn(echoPin6, HIGH);
         distance = duration/29/2;
         Distance6.data=distance;
+<<<<<<< HEAD
         if(distance<50){
+=======
+        if(distance<100){
+>>>>>>> 8cd8a82ff50b949f939efcd8b7c87625fb2a3eba
           digitalWrite(ledPin2, HIGH);
         }
         else{
@@ -87,7 +95,11 @@ void loop() {
         duration = pulseIn(echoPin7, HIGH);
         distance = duration/29/2;
         Distance7.data=distance;
+<<<<<<< HEAD
         if(distance<50){
+=======
+        if(distance<100){
+>>>>>>> 8cd8a82ff50b949f939efcd8b7c87625fb2a3eba
           digitalWrite(ledPin3, HIGH);
         }
         else{
@@ -99,7 +111,11 @@ void loop() {
         duration = pulseIn(echoPin8, HIGH);
         distance = duration/29/2;
         Distance8.data=distance;
+<<<<<<< HEAD
         if(distance<50){
+=======
+        if(distance<100){
+>>>>>>> 8cd8a82ff50b949f939efcd8b7c87625fb2a3eba
           digitalWrite(ledPin4, HIGH);
         }
         else{
