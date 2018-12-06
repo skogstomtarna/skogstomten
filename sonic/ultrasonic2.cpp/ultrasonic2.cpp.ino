@@ -23,7 +23,7 @@ const int ledPin4 = 4;
 // defines variables
 long duration;
 int distance;
-const int warning = 100;  // Sets the distance of which the LED's react to.
+const int warning = 30;  // Sets the distance of which the LED's react to.
 
 void setup() {
   nh.getHardware()->setBaud(57600);
@@ -56,6 +56,28 @@ void trigger(){
   digitalWrite(trigPin, LOW);
 }
 
+void reset_hcsr04() {       //Reset function if any sensor get stuck on "0"
+  pinMode(echoPin5,OUTPUT);
+  digitalWrite(echoPin5,LOW);
+  delay(1);
+  pinMode(echoPin5,INPUT);
+
+  pinMode(echoPin6,OUTPUT);
+  digitalWrite(echoPin6,LOW);
+  delay(1);
+  pinMode(echoPin6,INPUT);
+  
+  pinMode(echoPin7,OUTPUT);
+  digitalWrite(echoPin7,LOW);
+  delay(1);
+  pinMode(echoPin7,INPUT);
+  
+  pinMode(echoPin8,OUTPUT);
+  digitalWrite(echoPin8,LOW);
+  delay(1);
+  pinMode(echoPin8,INPUT);
+}
+
 void loop() {
   // pulseIn is a blocking function, thus we need to run each sensor one at a time.
   
@@ -70,6 +92,9 @@ void loop() {
   else{
     digitalWrite(ledPin1, LOW); 
   }
+  if (duration == 0) {
+    reset_hcsr04();
+  }
   delay(10);
 
   //Second sensor
@@ -82,6 +107,9 @@ void loop() {
   }
   else{
     digitalWrite(ledPin2, LOW); 
+  }
+  if (duration == 0) {
+    reset_hcsr04();
   }
   delay(10);
 
@@ -96,6 +124,9 @@ void loop() {
   else{
     digitalWrite(ledPin3, LOW); 
   }
+  if (duration == 0) {
+    reset_hcsr04();
+  }
   delay(10);
 
   // Fourth sensor
@@ -108,6 +139,9 @@ void loop() {
   }
   else{
     digitalWrite(ledPin4, LOW); 
+  }
+  if (duration == 0) {
+    reset_hcsr04();
   }
   delay(10);
   
