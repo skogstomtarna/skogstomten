@@ -10,13 +10,11 @@ std_msgs::Int64 front_warning;
 
 int sensor_data [8];
 bool warnings[8];
-
-//istället för att skicka 8, publisha 1 topic var, skapa egen message
-
+bool frontStop;
 //int stop [8];
 //bool warning;
-const int warningDistance = 100;
-const int proximityStop = 30;
+const int fbWarning = 100;
+const int sideWarning = 30;
 int sensor = 0;
 int flag = 0;
 
@@ -72,22 +70,28 @@ void sonic_cb8(const std_msgs::Int64::ConstPtr &Distance8){
 }
 
 void sensorWrapper(){
-  for(int i=0; i<8; i++){
-    if(sensor_data[i]<warningDistance){
-      warnings[i] = true;
+    if(sensor_data[1]<fbWarning & &sensor_data[1]!=0 || sensor_data[2]<fbWarning && sensor_data[1]!=0){
+      front_warning.data = 1;
+      ROS_INFO("Warning FRONT");
+    }
+    else if(sensor_data[0]<sideWarning && sensor_data[i]!=0){
+      ROS_INFO("Warning FRONT LEFT");
+    }
+    else if (sensor_data[3]<sideWarning && sensor_data[3]!=0){
+      ROS_INFO("Warning FRONT RIGHT");
+    }
+    else if (sensor_data[4]<sideWarning && sensor_data[3]!=0){
+      ROS_INFO("Warning BACK RIGHT");
+    }
+    else if (sensor_data[5]<fbWarning && sensor_data[3]!=0||sensor_data[6]<fbWarning && sensor_data[3]!=0){
+      ROS_INFO("Warning BACKWARDS");
+    }
+    else if (sensor_data[7]<sideWarning && sensor_data[3]!=0){
+      ROS_INFO("Warning BACK LEFT");
     }
     else{
-      warnings[i] = false;
+      front_warning.data = 0;
     }
-    if(sensor_data[i]<proximityStop){
-
-    }
-  }
-  if(warnings[1] == true){
-    front_warning.data = 1;
-  }
-  else{
-    front_warning.data = 0;
   }
   //Publishes true on this topic if item detected in front if the test rig
   sonic_front_pub.publish(front_warning);
@@ -95,14 +99,14 @@ void sensorWrapper(){
 
 void node_init(){
   ros::NodeHandle nh;
-  sonic_sub1 = nh.subscribe("Getting sensor1 data", 1, sonic_cb1);
-  sonic_sub2 = nh.subscribe("Getting sensor2 data", 1, sonic_cb2);
-  sonic_sub3 = nh.subscribe("Getting sensor3 data", 1, sonic_cb3);
-  sonic_sub4 = nh.subscribe("Getting sensor4 data", 1, sonic_cb4);
-  sonic_sub5 = nh.subscribe("Getting sensor5 data", 1, sonic_cb5);
-  sonic_sub6 = nh.subscribe("Getting sensor6 data", 1, sonic_cb6);
-  sonic_sub7 = nh.subscribe("Getting sensor7 data", 1, sonic_cb7);
-  sonic_sub8 = nh.subscribe("Getting sensor8 data", 1, sonic_cb8);
+  sonic_sub1 = nh.subscribe("sonic1", 1, sonic_cb1);
+  sonic_sub2 = nh.subscribe("sonic2", 1, sonic_cb2);
+  sonic_sub3 = nh.subscribe("sonic3", 1, sonic_cb3);
+  sonic_sub4 = nh.subscribe("sonic4", 1, sonic_cb4);
+  sonic_sub5 = nh.subscribe("sonic5", 1, sonic_cb5);
+  sonic_sub6 = nh.subscribe("sonic6", 1, sonic_cb6);
+  sonic_sub7 = nh.subscribe("sonic7", 1, sonic_cb7);
+  sonic_sub8 = nh.subscribe("sonic8", 1, sonic_cb8);
 
   if(flag==8){
     sensorWrapper();
@@ -135,4 +139,11 @@ int main(int argc, char **argv){
 //   sensor = i;
 //   int stop[i] = distance_warning(sensor);
 //
+// }
+
+// if(frontStop == true){
+//   front_warning.data = 1;
+// }
+// else{
+//   front_warning.data = 0;
 // }
