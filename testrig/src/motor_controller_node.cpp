@@ -46,8 +46,8 @@ void action_callback(const std_msgs::Int64::ConstPtr &action_msg)
   // unpack the message
   int action = action_msg->data;
 
-  // override stops all driving at the moment
-  if(motor_override==0){ pin_msg.data = pinCalc(action); }
+  // override stops all driving except backwards (action==1)
+  if(motor_override==0 || action==1){ pin_msg.data = pinCalc(action); }
   else{ pin_msg.data = 0; }
 
   // publish pins to arduino
