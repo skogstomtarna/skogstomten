@@ -5,100 +5,90 @@
 ros::Publisher sonic_front_pub;
 ros::Subscriber sonic_sub1, sonic_sub2, sonic_sub3, sonic_sub4, sonic_sub5, sonic_sub6, sonic_sub7, sonic_sub8;
 
-//std_msgs::Int64 sonic_msg;
 std_msgs::Int64 front_warning;
 
+// Define variables
 int sensor_data [8];
 bool warnings[8];
 bool frontStop;
-//int stop [8];
-//bool warning;
-const int fbWarning = 100;
-const int sideWarning = 30;
+const int fbWarning = 100;    // Front/back warning distance
+const int sideWarning = 30;   // Side warning distance
 int sensor = 0;
 int flag = 0;
 
-// callbacks
+// Callbacks, assigning sensor data from topics to the variable sensor_data and setting the flag
 void sonic_cb1(const std_msgs::Int64::ConstPtr &Distance1){
   sensor_data[0] = Distance1->data;
-  sensor = 1;
-  ROS_INFO("Sensor (%d), Distance1 %d cm.", sensor, sensor_data[0]);
-  flag++;
-  //stop[0] = distance_warning(sensor_data, sensor);
+  //ROS_INFO("Sensor (%d), Distance1 %d cm.", sensor, sensor_data[0]);    // In case printing the distance is desired
+  flag = flag | 1;
 }
 void sonic_cb2(const std_msgs::Int64::ConstPtr &Distance2){
   sensor_data[1] = Distance2->data;
-  sensor = 2;
-  ROS_INFO("Sensor (%d), Distance2 %d cm.", sensor, sensor_data[1]);
-  flag++;
+  //ROS_INFO("Sensor (%d), Distance2 %d cm.", sensor, sensor_data[1]);
+  flag = flag | 2;
 }
 void sonic_cb3(const std_msgs::Int64::ConstPtr &Distance3){
   sensor_data[2] = Distance3->data;
-  sensor = 3;
-  ROS_INFO("Sensor (%d), Distance3 %d cm.", sensor, sensor_data[2]);
-  flag++;
+  //ROS_INFO("Sensor (%d), Distance3 %d cm.", sensor, sensor_data[2]);
+  flag = flag | 4;
 }
 void sonic_cb4(const std_msgs::Int64::ConstPtr &Distance4){
   sensor_data[3] = Distance4->data;
-  sensor = 4;
-  ROS_INFO("Sensor (%d), Distance4 %d cm.", sensor, sensor_data[3]);
-  flag++;
+  //ROS_INFO("Sensor (%d), Distance4 %d cm.", sensor, sensor_data[3]);
+  flag = flag | 8;
 }
 void sonic_cb5(const std_msgs::Int64::ConstPtr &Distance5){
   sensor_data[4] = Distance5->data;
-  sensor = 5;
-  ROS_INFO("Sensor (%d), Distance5 %d cm.", sensor, sensor_data[4]);
-  flag++;
+  //ROS_INFO("Sensor (%d), Distance5 %d cm.", sensor, sensor_data[4]);
+  flag = flag | 16;
 }
 void sonic_cb6(const std_msgs::Int64::ConstPtr &Distance6){
   sensor_data[5] = Distance6->data;
-  sensor = 6;
-  ROS_INFO("Sensor (%d), Distance6 %d cm.", sensor, sensor_data[5]);
-  flag++;
+  //ROS_INFO("Sensor (%d), Distance6 %d cm.", sensor, sensor_data[5]);
+  flag = flag | 32;
 }
 void sonic_cb7(const std_msgs::Int64::ConstPtr &Distance7){
   sensor_data[6] = Distance7->data;
-  sensor = 7;
-  ROS_INFO("Sensor (%d), Distance7 %d cm.", sensor, sensor_data[6]);
-  flag = flag | 1;
+  //ROS_INFO("Sensor (%d), Distance7 %d cm.", sensor, sensor_data[6]);
+  flag = flag | 64;
 }
 void sonic_cb8(const std_msgs::Int64::ConstPtr &Distance8){
   sensor_data[7] = Distance8->data;
-  sensor = 8;
-  ROS_INFO("Sensor (%d), Distance8 %d cm.", sensor, sensor_data[7]);
-  flag++;
+  //ROS_INFO("Sensor (%d), Distance8 %d cm.", sensor, sensor_data[7]);
+  flag = flag | 128;
 }
 
 void sensorWrapper(){
-    if(sensor_data[1]<fbWarning & &sensor_data[1]!=0 || sensor_data[2]<fbWarning && sensor_data[1]!=0){
-      front_warning.data = 1;
+    if(sensor_data[1]<fbWarning & &sensor_data[1]!=0 || sensor_data[2]<fbWarning && sensor_data[2]!=0){
+      front_warning.data = 1;   // Set the warning to the decision_node
       ROS_INFO("Warning FRONT");
-    }
-    else if(sensor_data[0]<sideWarning && sensor_data[i]!=0){
-      ROS_INFO("Warning FRONT LEFT");
-    }
-    else if (sensor_data[3]<sideWarning && sensor_data[3]!=0){
-      ROS_INFO("Warning FRONT RIGHT");
-    }
-    else if (sensor_data[4]<sideWarning && sensor_data[3]!=0){
-      ROS_INFO("Warning BACK RIGHT");
-    }
-    else if (sensor_data[5]<fbWarning && sensor_data[3]!=0||sensor_data[6]<fbWarning && sensor_data[3]!=0){
-      ROS_INFO("Warning BACKWARDS");
-    }
-    else if (sensor_data[7]<sideWarning && sensor_data[3]!=0){
-      ROS_INFO("Warning BACK LEFT");
     }
     else{
       front_warning.data = 0;
     }
+    if(sensor_data[0]<sideWarning && sensor_data[0]!=0){
+      ROS_INFO("Warning FRONT LEFT");
+    }
+    if (sensor_data[3]<sideWarning && sensor_data[3]!=0){
+      ROS_INFO("Warning FRONT RIGHT");
+    }
+    if (sensor_data[4]<sideWarning && sensor_data[4]!=0){
+      ROS_INFO("Warning BACK RIGHT");
+    }
+    if (sensor_data[5]<fbWarning && sensor_data[5]!=0||sensor_data[6]<fbWarning && sensor_data[6]!=0){
+      ROS_INFO("Warning BACKWARDS");
+    }
+    if (sensor_data[7]<sideWarning && sensor_data[7]!=0){
+      ROS_INFO("Warning BACK LEFT");
+    }
   }
-  //Publishes true on this topic if item detected in front if the test rig
+  // Publishes true on the topic if item detected in front if the test rig
   sonic_front_pub.publish(front_warning);
 }
 
 void node_init(){
   ros::NodeHandle nh;
+  // Telling ROS which topics this node subscribes and publishes to
   sonic_sub1 = nh.subscribe("sonic1", 1, sonic_cb1);
   sonic_sub2 = nh.subscribe("sonic2", 1, sonic_cb2);
   sonic_sub3 = nh.subscribe("sonic3", 1, sonic_cb3);
@@ -107,11 +97,11 @@ void node_init(){
   sonic_sub6 = nh.subscribe("sonic6", 1, sonic_cb6);
   sonic_sub7 = nh.subscribe("sonic7", 1, sonic_cb7);
   sonic_sub8 = nh.subscribe("sonic8", 1, sonic_cb8);
+  sonic_front_pub = nh.advertise<std_msgs::Int64>("front_warning", 1);
 
-  if(flag==8){
+  if(flag==255){  //The flag is set in the callbacks to ensure the wrapper only runs after recieving data from all the sensors.
     sensorWrapper();
     flag = 0;
-    sonic_front_pub = nh.advertise<std_msgs::Int64>("front_warning", 1);
   }
 }
 
@@ -122,28 +112,3 @@ int main(int argc, char **argv){
   ros::spin();
   return 0;
 }
-
-// bool distance_warning(sensor_data)
-// {
-//   if(sensor_data[sensor] < warningDistance){
-//     warning = true;
-//     ROS_DEBUG("Object detected in close proximity on sensor %d , sending warning.", sensor);
-//   }
-//   else{
-//     warning = false;
-//   }
-//   return warning;
-// }
-
-// for(int i=0;i<8;i++){
-//   sensor = i;
-//   int stop[i] = distance_warning(sensor);
-//
-// }
-
-// if(frontStop == true){
-//   front_warning.data = 1;
-// }
-// else{
-//   front_warning.data = 0;
-// }
