@@ -59,26 +59,26 @@ void sonic_cb8(const std_msgs::Int64::ConstPtr &Distance8){
 }
 
 void sensorWrapper(){
-    if(sensor_data[1]<fbWarning & &sensor_data[1]!=0 || sensor_data[2]<fbWarning && sensor_data[2]!=0){
+    if(sensor_data[1] < fbWarning && sensor_data[1] != 0 || sensor_data[2] < fbWarning && sensor_data[2] != 0){
       front_warning.data = 1;   // Set the warning to the decision_node
       ROS_INFO("Warning FRONT");
     }
     else{
       front_warning.data = 0;
     }
-    if(sensor_data[0]<sideWarning && sensor_data[0]!=0){
+    if(sensor_data[0] < sideWarning && sensor_data[0] !=0 ){
       ROS_INFO("Warning FRONT LEFT");
     }
-    if (sensor_data[3]<sideWarning && sensor_data[3]!=0){
+    if(sensor_data[3] < sideWarning && sensor_data[3] !=0 ){
       ROS_INFO("Warning FRONT RIGHT");
     }
-    if (sensor_data[4]<sideWarning && sensor_data[4]!=0){
+    if(sensor_data[4] < sideWarning && sensor_data[4] !=0 ){
       ROS_INFO("Warning BACK RIGHT");
     }
-    if (sensor_data[5]<fbWarning && sensor_data[5]!=0||sensor_data[6]<fbWarning && sensor_data[6]!=0){
+    if(sensor_data[5] < fbWarning && sensor_data[5] !=0 || sensor_data[6] < fbWarning && sensor_data[6] != 0){
       ROS_INFO("Warning BACKWARDS");
     }
-    if (sensor_data[7]<sideWarning && sensor_data[7]!=0){
+    if(sensor_data[7] < sideWarning && sensor_data[7] != 0){
       ROS_INFO("Warning BACK LEFT");
     }
   }
