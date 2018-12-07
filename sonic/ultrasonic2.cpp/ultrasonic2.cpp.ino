@@ -9,7 +9,6 @@ ros::Publisher sonic6("sonic6",&Distance6);
 ros::Publisher sonic7("sonic7",&Distance7);
 ros::Publisher sonic8("sonic8",&Distance8);
 
-// defines pins numbers
 const int trigPin = 12;
 const int echoPin5 = 11;
 const int echoPin6 = 10;
@@ -20,43 +19,41 @@ const int ledPin2 = 6;
 const int ledPin3 = 5;
 const int ledPin4 = 4;
 
-// defines variables
 long duration;
 int distance;
-const int warning = 30;  // Sets the distance of which the LED's react to.
+const int fbWarning = 100;
+const int sideWarning = 30;
 
 void setup() {
   nh.getHardware()->setBaud(57600);
   nh.initNode();
-  nh.advertise(sonic5); // Advertises the topics to ROS
+  nh.advertise(sonic5);
   nh.advertise(sonic6);
   nh.advertise(sonic7);
   nh.advertise(sonic8);
  
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
-  pinMode(echoPin5, INPUT); // Sets the echoPin as an Input
-  pinMode(echoPin6, INPUT); // Sets the echoPin as an Input
-  pinMode(echoPin7, INPUT); // Sets the echoPin as an Input
-  pinMode(echoPin8, INPUT); // Sets the echoPin as an Input
-  pinMode(ledPin1, OUTPUT); // Sets the ledPin1 as an Output
-  pinMode(ledPin2, OUTPUT); // Sets the ledPin2 as an Output
-  pinMode(ledPin3, OUTPUT); // Sets the ledPin3 as an Output
-  pinMode(ledPin4, OUTPUT); // Sets the ledPin4 as an Output
-  Serial.begin(57600); // Starts the serial communication
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin5, INPUT);
+  pinMode(echoPin6, INPUT);
+  pinMode(echoPin7, INPUT);
+  pinMode(echoPin8, INPUT);
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  pinMode(ledPin4, OUTPUT);
+  Serial.begin(57600);
 }
 
-// Function to activate the trigger pulse
 void trigger(){
   // Clears the trigPin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(5);
-  // Sets the trigPin on HIGH state for 10 micro seconds
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 }
 
-void reset_hcsr04() {       //Reset function if any sensor get stuck on "0"
+void reset_hcsr04() {
   pinMode(echoPin5,OUTPUT);
   digitalWrite(echoPin5,LOW);
   delay(1);
@@ -79,14 +76,12 @@ void reset_hcsr04() {       //Reset function if any sensor get stuck on "0"
 }
 
 void loop() {
-  // pulseIn is a blocking function, thus we need to run each sensor one at a time.
-  
-  // First sensor
+  // 5th sensor
   trigger();
   duration = pulseIn(echoPin5, HIGH, 100000);
-  distance = duration/29/2;               // "/29/2" speed of sound travelling back and forth
+  distance = duration/29/2;
   Distance5.data=distance;
-  if(distance<warning && distance != 0){  // Distance results in "0" if no return signal is recieved.
+  if(distance<sideWarning && distance != 0){
     digitalWrite(ledPin1, HIGH);
   }
   else{
@@ -97,12 +92,12 @@ void loop() {
   }
   delay(10);
 
-  //Second sensor
+  //6th sensor
   trigger();
   duration = pulseIn(echoPin6, HIGH, 100000);
   distance = duration/29/2;
   Distance6.data=distance;
-  if(distance<warning && distance != 0){
+  if(distance<sideWarning && distance != 0){
     digitalWrite(ledPin2, HIGH);
   }
   else{
@@ -113,12 +108,12 @@ void loop() {
   }
   delay(10);
 
-  // Third sensor
+  // 7th sensor
   trigger();
   duration = pulseIn(echoPin7, HIGH, 100000);
   distance = duration/29/2;
   Distance7.data=distance;
-  if(distance<warning && distance != 0){
+  if(distance<sideWarning && distance != 0){
     digitalWrite(ledPin3, HIGH);
   }
   else{
@@ -129,12 +124,12 @@ void loop() {
   }
   delay(10);
 
-  // Fourth sensor
+  // 8th sensor
   trigger();
   duration = pulseIn(echoPin8, HIGH, 100000);
   distance = duration/29/2;
   Distance8.data=distance;
-  if(distance<warning && distance != 0){
+  if(distance<sideWarning && distance != 0){
     digitalWrite(ledPin4, HIGH);
   }
   else{
@@ -145,7 +140,6 @@ void loop() {
   }
   delay(10);
   
-  //Publishing data
   sonic5.publish(&Distance5);
   sonic6.publish(&Distance6);
   sonic7.publish(&Distance7);
