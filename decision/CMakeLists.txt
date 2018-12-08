@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(depthvideo)
+project(decision)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,20 +8,13 @@ project(depthvideo)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-##  algorithm.hpp
   roscpp
   rospy
-  zed_display_rviz
-  zed_wrapper
-  image_transport
-  sensor_msgs
-  cv_bridge
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
-find_package(ZED 2 REQUIRED)
-find_package(OpenCV REQUIRED)
-find_package(CUDA ${ZED_CUDA_VERSION} EXACT REQUIRED)
+# find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -111,8 +104,8 @@ find_package(CUDA ${ZED_CUDA_VERSION} EXACT REQUIRED)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES depthvideo
-#  CATKIN_DEPENDS algorithm.hpp roscpp rospy zed_display_rviz zed_wrapper
+#  LIBRARIES decision
+#  CATKIN_DEPENDS roscpp rospy stdmsgs
 #  DEPENDS system_lib
 )
 
@@ -122,16 +115,14 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(${catkin_INCLUDE_DIRS})
+include_directories(
 # include
-include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${ZED_LIBRARY_DIR})
-include_directories(${CUDA_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+  ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/depthvideo.cpp
+#   src/${PROJECT_NAME}/decision.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -142,9 +133,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-FILE(GLOB_RECURSE SRC_FILES src/depthvideo.cpp)
-FILE(GLOB_RECURSE HDR_FILES include/algorithm.hpp)
-add_executable(depthvideo_node ${HDR_FILES} ${SRC_FILES})
+add_executable(decision_node src/decision_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,10 +146,8 @@ add_executable(depthvideo_node ${HDR_FILES} ${SRC_FILES})
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(depthvideo_node
+target_link_libraries(decision_node
   ${catkin_LIBRARIES}
-  ${OpenCV_LIBRARIES}
-  ${ZED_LIBS}
 )
 
 #############
@@ -185,10 +172,10 @@ target_link_libraries(depthvideo_node
 # )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/depthvideo_node/
-#  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#  FILES_MATCHING PATTERN "*.hpp"
-#  PATTERN ".svn" EXCLUDE
+# install(DIRECTORY include/${PROJECT_NAME}/
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h"
+#   PATTERN ".svn" EXCLUDE
 # )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
@@ -203,7 +190,7 @@ target_link_libraries(depthvideo_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_depthvideo.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_decision.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

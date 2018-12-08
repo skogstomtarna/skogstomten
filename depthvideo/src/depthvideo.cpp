@@ -26,7 +26,7 @@ RGB_parameter left;
 */
 void left_image_callback(const sensor_msgs::ImageConstPtr& msg){
 	left.RGBimage = cv_bridge::toCvShare(msg)-> image;
-	std::cout<<"hello"<<std::endl;
+	std::cout<<"LICB"<<std::endl;
 	int object = 0;
 	int count = 0;
 	std::vector<cv::Vec4i> hierarchy;
@@ -45,6 +45,9 @@ void left_image_callback(const sensor_msgs::ImageConstPtr& msg){
 		}
 	}
 	object = count;
+	if(object > 0){
+		std::cout<<"object warning Stop"<<std::endl;
+	}
 	try
 	{
 		cv::imshow("Result", drawing);
@@ -61,7 +64,7 @@ void left_image_callback(const sensor_msgs::ImageConstPtr& msg){
 
 void depth_image_callback(const sensor_msgs::ImageConstPtr& msg)
 {
-	//std::cout << "image received " <<std::endl;
+	//std::cout << "DICB" <<std::endl;
 	//cv_bridge::CvImagePtr cv_ptr;
 	//std::string frameId;
 	//ros::Time t;
@@ -81,7 +84,8 @@ void depth_image_callback(const sensor_msgs::ImageConstPtr& msg)
 	//img.cols = msg.width;
 	//img = &msg.data;
 	encodingType = msg->encoding;
-	//std::cout << "format is "<< encodingType<< std::endl;
+	//std::cout << "DICB2 " <<std::endl;//added to test
+	std::cout << "format is "<< encodingType<< std::endl;
 	img = cv_bridge::toCvShare(msg)-> image;
 	//std::cout<<type2str(img.type())<<std::endl;
 	cv::minMaxIdx(img, &min, &max);

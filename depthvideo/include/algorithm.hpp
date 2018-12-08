@@ -1,13 +1,13 @@
 #include "opencv2/opencv.hpp"
 #include <string>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui.hpp>
 extern int object;
 extern std::vector<std::vector<cv::Point> > RGBcontours;
 class WatershedSegmenter{
 	private:
 	cv::Mat markers;
 	public:
-	void setMarkers(cv::Mat& markerImage)
+	void setMarkers(cv::Mat &markerImage)
 	{
 		markerImage.convertTo(markers, CV_32SC1);
 	}
