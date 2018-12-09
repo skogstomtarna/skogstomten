@@ -17,7 +17,7 @@
 Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 // motor pins: enable 1 2 3 4, dir 1 2 3 4
-int pin_numbers[] = {47,45,43,41,39,37,35,33};
+int pin_numbers[] = {35,33,31,29,45,43,41,39};
 char pin_data[] = {0,0,0,0,0,0,0,0};
 
 // time vars
