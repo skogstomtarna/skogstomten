@@ -26,7 +26,7 @@ const int ledPin4 = 4;
 // Define variables
 long duration;
 int distance;
-const int fbWarning = 100;   // Sets the front and back warning distance
+const int fWarning = 100;   // Sets the front warning distance
 const int sideWarning = 30;  // Sets the side warning distance
 
 void setup() {
@@ -64,7 +64,7 @@ void trigger(){
 }
 
 // Reset function if any sensor get stuck on "0"
-void reset_hcsr04() {
+/*void reset_hcsr04() {
   pinMode(echoPin1,OUTPUT);
   digitalWrite(echoPin1,LOW);
   delay(1);
@@ -84,7 +84,7 @@ void reset_hcsr04() {
   digitalWrite(echoPin4,LOW);
   delay(1);
   pinMode(echoPin4,INPUT);
-}
+}*/
 
 void loop() {
   // pulseIn is a blocking function, thus we need to run each sensor one at a time.
@@ -100,9 +100,9 @@ void loop() {
   else{
     digitalWrite(ledPin1, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
   delay(10);
 
   // 2nd sensor
@@ -110,15 +110,15 @@ void loop() {
   duration = pulseIn(echoPin2, HIGH, 100000);
   distance = duration/29/2;
   Distance2.data=distance;
-  if(distance<fbWarning && distance != 0){
+  if(distance<fWarning && distance != 0){
     digitalWrite(ledPin2, HIGH);
   }
   else{
     digitalWrite(ledPin2, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
   delay(10);
 
   // 3rd sensor
@@ -126,15 +126,15 @@ void loop() {
   duration = pulseIn(echoPin3, HIGH, 100000);
   distance = duration/29/2;
   Distance3.data=distance;
-  if(distance<fbWarning && distance != 0){
+  if(distance<fWarning && distance != 0){
     digitalWrite(ledPin3, HIGH);
   }
   else{
     digitalWrite(ledPin3, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
   delay(10);
 
   // 4th sensor
@@ -148,9 +148,9 @@ void loop() {
   else{
     digitalWrite(ledPin4, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
   delay(10);
 
   // Publishing topics
@@ -160,5 +160,5 @@ void loop() {
   sonic4.publish(&Distance4);
   
   nh.spinOnce();
-  delay(100);
+  delay(10);
 }
