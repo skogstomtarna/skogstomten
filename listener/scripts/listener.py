@@ -1,5 +1,6 @@
 import rospy
 from sensor_msgs.msg import LaserScan
+from std_msgs.msg import Int32
 
 def callback(msg):
 	#for i in range(360):
@@ -11,13 +12,25 @@ def callback(msg):
 	entry2 = 0
 	entry3 = 0
 	entry4 = 0
+	faulty_proceed = 0
 	for i in range(360):
 		#direction_identifier = 0		
+		if(i>=11 and i<25) or (i>324 and i<=344):
+			if (msg.ranges[i]<1.1): ##Correspond to 0.5m from front of test rig
+				lidar_pub.publish(1)
+				print("Stop Alert! Obstacle in front at angle" )
+				#print(i-180)
+				break		
 		if (i<11 or i>344):
-			if (msg.ranges[i]<2.1):
+			if (msg.ranges[i]<2.7):#Corresponds to 2m from front of test rig
+				lidar_pub.publish(1)
 				print("Stop Alert! Obstacle in front at angle" )
 				#print(i-180)
 				break
+			else:
+				faulty_proceed = faulty_proceed+1
+				if (faulty_proceed == 26): ## Based on angle in front for STOP
+					lidar_pub.publish(0)
 		if (msg.ranges[i]<1):
 			if(i<90):
 							
@@ -76,5 +89,6 @@ def callback(msg):
 
 rospy.init_node('listener')
 sub=rospy.Subscriber('/scan', LaserScan, callback)
+lidar_pub=rospy.Publisher('lidar_front_warning',Int32, queue_size = 1) 
 # spin() simply keeps python from exiting until this node is stopped
 rospy.spin()

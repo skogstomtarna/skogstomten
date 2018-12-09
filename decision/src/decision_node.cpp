@@ -12,8 +12,8 @@ int sonic_data, lidar_data, camera_data;
 const float w_sonic = 1;
 const float w_lidar = 1;
 const float w_camera = 0;
-const float sum;
-const float threshold = 1.5;
+float sum=0;
+const float threshold = 0.9;
 
 // Callback, for the sonic
 void sonic_callback(const std_msgs::Int64::ConstPtr &sonic_front_pub){
@@ -26,16 +26,17 @@ void lidar_callback(const std_msgs::Int64::ConstPtr &lidar_front_pub){
 }
 
 void obj_decision(){
-    sum=(w_sonic*sonic_data)+(w_lidar*lidar_data)+(w_camera*camera_data)
+    sum=(w_sonic*sonic_data)+(w_lidar*lidar_data)+(w_camera*camera_data);
     if(sum > threshold){
       motor_override.data = 1;   // Override the Motor Node
       ROS_INFO("STOP NOW");
     }
     else{
       ROS_INFO("SAFE TO MOVE");
+      motor_override.data = 0;
     }
-  // Publishes true on the topic if item detected in front if the test rig
-  decision_pub.publish(motor_override);
+    // Publishes true on the topic if item detected in front if the test rig
+    decision_pub.publish(motor_override);
 }
 
 void node_init(){
