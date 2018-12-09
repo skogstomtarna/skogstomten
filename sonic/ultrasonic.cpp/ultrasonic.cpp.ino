@@ -103,7 +103,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
 
   // 2nd sensor
   trigger();
@@ -119,7 +119,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
 
   // 3rd sensor
   trigger();
@@ -135,7 +135,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
 
   // 4th sensor
   trigger();
@@ -151,7 +151,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
 
   // Publishing topics
   sonic1.publish(&Distance1);
@@ -160,5 +160,5 @@ void loop() {
   sonic4.publish(&Distance4);
   
   nh.spinOnce();
-  delay(10);
+  delay(100);
 }
