@@ -90,7 +90,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
 
   //6th sensor
   trigger();
@@ -106,7 +106,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
 
   // 7th sensor
   trigger();
@@ -122,7 +122,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
 
   // 8th sensor
   trigger();
@@ -138,7 +138,7 @@ void loop() {
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
-  delay(10);
+  delay(100);
   
   sonic5.publish(&Distance5);
   sonic6.publish(&Distance6);
@@ -146,5 +146,5 @@ void loop() {
   sonic8.publish(&Distance8);
   
   nh.spinOnce();
-  delay(10);
+  delay(100);
 }
