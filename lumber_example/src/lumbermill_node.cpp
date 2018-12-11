@@ -18,7 +18,7 @@ int log_cutter(int logs)
 {
   // the lumbermill is extremely wasteful so we only get 10 planks per log
   int planks = 10*logs;
-  ROS_DEBUG("cut %d logs into %d planks", logs, planks);
+  ROS_INFO("cut %d logs into %d planks", logs, planks);
   return planks;
 }
 
@@ -27,13 +27,13 @@ void lumber_callback(const std_msgs::Int64::ConstPtr &lumber_msg)
 {
   // unpack the message
   int logs = lumber_msg->data;
-  ROS_DEBUG("received %d logs",logs);
+  ROS_INFO("received %d logs",logs);
   // cut the logs by calling a separate function and package to planks_msg
   planks_msg.data = log_cutter(logs);
 
   // publish the planks
   planks_pub.publish(planks_msg);
-  ROS_DEBUG("sent %d planks to the shop",(int)planks_msg.data);
+  ROS_INFO("sent %d planks to the shop",(int)planks_msg.data);
 }
 
 // pubs and subs don't need to be init'd in the main loop, just check that the object scopes are correct

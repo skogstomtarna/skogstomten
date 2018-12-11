@@ -21,7 +21,9 @@ const int ledPin4 = 4;
 
 long duration;
 int distance;
+
 const int bWarning = 30;
+
 const int sideWarning = 30;
 
 void setup() {
@@ -53,7 +55,9 @@ void trigger(){
   digitalWrite(trigPin, LOW);
 }
 
+
 /*void reset_hcsr04() {
+
   pinMode(echoPin5,OUTPUT);
   digitalWrite(echoPin5,LOW);
   delay(1);
@@ -73,7 +77,9 @@ void trigger(){
   digitalWrite(echoPin8,LOW);
   delay(1);
   pinMode(echoPin8,INPUT);
+
 }*/
+
 
 void loop() {
   // 5th sensor
@@ -87,6 +93,7 @@ void loop() {
   else{
     digitalWrite(ledPin1, LOW); 
   }
+
   //if (duration == 0) {
   //  reset_hcsr04();
   //}
@@ -97,6 +104,7 @@ void loop() {
   duration = pulseIn(echoPin6, HIGH, 100000);
   distance = duration/29/2;
   Distance6.data=distance;
+
   if(distance<bWarning && distance != 0){
     digitalWrite(ledPin2, HIGH);
   }

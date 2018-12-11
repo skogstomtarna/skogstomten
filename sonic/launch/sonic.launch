@@ -1,5 +1,6 @@
 <launch>
   <!-- Ultrasonic node -->
+
   <node name="sonic_node" pkg="sonic" type="sonic_node" output="screen" />
 
 <node name="ultrasonic" pkg="rosserial_python" type="serial_node.py" output="screen">
