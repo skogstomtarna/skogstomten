@@ -21,7 +21,9 @@ const int ledPin4 = 4;
 
 long duration;
 int distance;
-const int fbWarning = 100;
+
+const int bWarning = 30;
+
 const int sideWarning = 30;
 
 void setup() {
@@ -53,7 +55,9 @@ void trigger(){
   digitalWrite(trigPin, LOW);
 }
 
-void reset_hcsr04() {
+
+/*void reset_hcsr04() {
+
   pinMode(echoPin5,OUTPUT);
   digitalWrite(echoPin5,LOW);
   delay(1);
@@ -73,7 +77,9 @@ void reset_hcsr04() {
   digitalWrite(echoPin8,LOW);
   delay(1);
   pinMode(echoPin8,INPUT);
-}
+
+}*/
+
 
 void loop() {
   // 5th sensor
@@ -87,42 +93,44 @@ void loop() {
   else{
     digitalWrite(ledPin1, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
-  delay(10);
+
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
+  delay(100);
 
   //6th sensor
   trigger();
   duration = pulseIn(echoPin6, HIGH, 100000);
   distance = duration/29/2;
   Distance6.data=distance;
-  if(distance<sideWarning && distance != 0){
+
+  if(distance<bWarning && distance != 0){
     digitalWrite(ledPin2, HIGH);
   }
   else{
     digitalWrite(ledPin2, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
-  delay(10);
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
+  delay(100);
 
   // 7th sensor
   trigger();
   duration = pulseIn(echoPin7, HIGH, 100000);
   distance = duration/29/2;
   Distance7.data=distance;
-  if(distance<sideWarning && distance != 0){
+  if(distance<bWarning && distance != 0){
     digitalWrite(ledPin3, HIGH);
   }
   else{
     digitalWrite(ledPin3, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
-  delay(10);
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
+  delay(100);
 
   // 8th sensor
   trigger();
@@ -135,10 +143,10 @@ void loop() {
   else{
     digitalWrite(ledPin4, LOW); 
   }
-  if (duration == 0) {
-    reset_hcsr04();
-  }
-  delay(10);
+  //if (duration == 0) {
+  //  reset_hcsr04();
+  //}
+  delay(100);
   
   sonic5.publish(&Distance5);
   sonic6.publish(&Distance6);
