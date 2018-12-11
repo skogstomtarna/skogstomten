@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sonic</name>
+  <version>0.0.1</version>
+  <description>These nodes recieve and publishes the data from 8 Ultrasonic sensors, HC-SR04</description>
+
+  <author email="tgeiger@kth.se">Thomas Geiger Ferotin</author>
+
+  <maintainer email="tgeiger@kth.se">Thomas Geiger Ferotin</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <export>
+  </export>
+</package>
